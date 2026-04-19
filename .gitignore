@@ -1,0 +1,27 @@
+# node modules
+node_modules/
+
+# env files (IMPORTANT 🔥)
+.env
+
+# logs
+logs/
+*.log
+npm-debug.log*
+
+# OS files
+.DS_Store
+
+# build folders
+dist/
+build/
+
+# uploads (optional - अगर तुम resume upload कर रहे हो)
+uploads/
+
+# coverage
+coverage/
+
+# editor files
+.vscode/
+.idea/
