@@ -1,6 +1,6 @@
 import express, { json } from "express";
-const connectDataBase = require("./config/db").default.default;
-import routes from "./router/routes";
+const connectDataBase = require("./config/db");
+import routes from "./router/routes.js";
 require("dotenv").config();
 const PORT = process.env.PORT || 5000;
 const app = express();

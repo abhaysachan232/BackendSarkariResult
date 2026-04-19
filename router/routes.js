@@ -1,8 +1,8 @@
 import express from "express";
-import { signUp, signIn } from "../controller/authController";
+import { signUp, signIn } from "../controller/authController.js";
 const router = require("express").Router();
-import { findById } from "../models/UserSchema";
-import authMiddleware from "../middleware/middleWare";
+import { findById } from "../models/UserSchema.js";
+import authMiddleware from "../middleware/middleWare.js";
 
 router.post("/signup", signUp);
 router.post("/signin", signIn);

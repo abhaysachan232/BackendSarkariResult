@@ -1,6 +1,6 @@
 import express from "express";
 import { sign } from 'jsonwebtoken';
-import { findOne, create } from '../models/UserSchema';
+import { findOne, create } from '../models/UserSchema.js';
 import { hash, compare } from 'bcrypt';
 
 const signUp = async(req, res)=>{
