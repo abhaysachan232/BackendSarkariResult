@@ -1,7 +1,7 @@
 const express = require("express");
 const routes = express.Router();
 // routes file
-const { signUp, signIn } = require("../controller/authController");
+const { signIn,signUp} = require("../controller/authController");
 const authMiddleware = require("../middleware/authMiddleware");
 const User = require("../model/User");
 
