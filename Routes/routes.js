@@ -15,3 +15,5 @@ router.get("/profile", authMiddleware, async (req, res) => {
     user: user,
   });
 });
+
+module.exports = router;
