@@ -9,7 +9,7 @@ app.use(express.json());
 app.get("/", (req, res) => {
   res.send("API running");
 });
-const routes = require("./Routes/routes");
+const routes = require("./router/routes");
 app.use("/api", routes);
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
