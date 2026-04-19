@@ -1,14 +1,14 @@
-const express = require("express");
-const jwt = require('jsonwebtoken');
-const user = require('../models/UserSchema');
-const bcrypt = require('bcrypt');
+import express from "express";
+import { sign } from 'jsonwebtoken';
+import { findOne, create } from '../models/UserSchema';
+import { hash, compare } from 'bcrypt';
 
 const signUp = async(req, res)=>{
 const {name, email, password,date, age} = req.body;
-const existingUser = await user.findOne({email});
+const existingUser = await findOne({email});
 if(!existingUser){
-    const password = await bcrypt.hash(req.body.password,10);
-   const newUser = await user.create({
+    const password = await hash(req.body.password,10);
+   const newUser = await create({
     name: name,
     email: email,
     password: password,
@@ -34,21 +34,21 @@ if(existingUser){
 
 const signIn = async(req, res)=>{
     const {email, password} = req.body;
-    const existingUser = await user.findOne({email});
+    const existingUser = await findOne({email});
     if(!existingUser){
         res.status(400).json({
             success: false,
             message: "User not found"
         });
     }
-    const isPasswordCorrect = await bcrypt.compare(password, existingUser.password);
+    const isPasswordCorrect = await compare(password, existingUser.password);
     if(!isPasswordCorrect){
         res.status(400).json({
             success: false,
             message: "Invalid password"
         });
     }
-    const Token = jwt.sign({id: existingUser._id}, process.env.JWT_SECRET, {expiresIn: '1h'});
+    const Token = sign({id: existingUser._id}, process.env.JWT_SECRET, {expiresIn: '1h'});
     res.status(200).json({
         success: true,
         message: "User signed in successfully",
@@ -56,5 +56,7 @@ const signIn = async(req, res)=>{
     });
 }
 
-exports.signUp = signUp;
-exports.signIn = signIn;
+const _signUp = signUp;
+export { _signUp as signUp };
+const _signIn = signIn;
+export { _signIn as signIn };
