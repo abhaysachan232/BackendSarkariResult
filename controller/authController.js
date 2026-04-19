@@ -1,62 +1,30 @@
-import express from "express";
-import { sign } from 'jsonwebtoken';
-import { findOne, create } from '../models/UserSchema.js';
-import { hash, compare } from 'bcrypt';
-
-const signUp = async(req, res)=>{
-const {name, email, password,date, age} = req.body;
-const existingUser = await findOne({email});
-if(!existingUser){
-    const password = await hash(req.body.password,10);
-   const newUser = await create({
-    name: name,
-    email: email,
-    password: password,
-    date: date.now(),
-    age: age
-   })
-   res.status(201).json({
-    success: true,
-    message: "User created successfully",
-    user: newUser
-   });
+const user = require("../model/User");
+const bccrpt = require("bcrypt");
+const jwtToken = require("jsonwebtoken");
 
 
-}
-if(existingUser){
-    res.status(400).json({
-        success: false,
-        message: "User already exists"
-    });
-
-}
-}
-
-const signIn = async(req, res)=>{
-    const {email, password} = req.body;
-    const existingUser = await findOne({email});
-    if(!existingUser){
-        res.status(400).json({
-            success: false,
-            message: "User not found"
-        });
+exports.signup = async(req,res)=>{
+    const {name,email,password,age} = req.body;
+    const existingUser = await user.findOne({email});
+    if(existingUser){
+        return res.status(400).json({message:"User already exists"});
     }
-    const isPasswordCorrect = await compare(password, existingUser.password);
-    if(!isPasswordCorrect){
-        res.status(400).json({
-            success: false,
-            message: "Invalid password"
-        });
-    }
-    const Token = sign({id: existingUser._id}, process.env.JWT_SECRET, {expiresIn: '1h'});
-    res.status(200).json({
-        success: true,
-        message: "User signed in successfully",
-        token: Token
-    });
+    const hashedPassword = await bccrpt.hash(password,10);
+    const user = await user.create({name,email,password:hashedPassword,age});
+    res.status(201).json({message:"User created successfully",user});
 }
 
-const _signUp = signUp;
-export { _signUp as signUp };
-const _signIn = signIn;
-export { _signIn as signIn };
+exports.login = async(req,res)=>{
+const {email,password}=req.body;
+const existinguser = await user.findOne({email});
+if(!existinguser){
+    return res.status(400).json({message:"User not found"});
+}
+const Checkpassword = await bccrpt.compare(password,existinguser.password);
+if(!Checkpassword){
+    return res.status(400).json({message:"invalid Password"});
+
+}
+const token = jwtToken.sign({id:existinguser._id},process.env.JWT_SECRET,{expiresIn:"1h"});
+res.status(200).json({message:"Login successful",token});
+}

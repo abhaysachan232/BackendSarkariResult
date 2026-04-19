@@ -1,17 +1,20 @@
-import express, { json } from "express";
-const connectDataBase = require("./config/db");
-import routes from "./router/routes.js";
-require("dotenv").config();
-const PORT = process.env.PORT || 5000;
+const express = require('express');
+const connectDB = require('./config/db');
+require('dotenv').config();
+const authRoutes = require('./routes/authRoutes');
+
 const app = express();
-connectDataBase();
 
-app.use(json());
-app.get("/", (req, res) => {
-  res.send("API running");
-});
 
-app.use("/api", routes);
-app.listen(PORT, () => {
-  console.log(`Server is running on port ${PORT}`);
+app.use(express.json());
+
+connectDB();
+
+app.use("/", authRoutes);
+// app.get('/',(req,res)=>{
+//   console.log("Hello World",req);
+//   res.send("Hello World");
+// })
+app.listen(process.env.PORT, () => {
+  console.log(`Server is running on http://localhost:${process.env.PORT}`);
 });
