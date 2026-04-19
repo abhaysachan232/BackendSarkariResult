@@ -1,14 +1,15 @@
 const express = require("express");
 const routes = express.Router();
-const {signup,login} = require("../controller/authController");
+// routes file
+const { signUp, signIn } = require("../controller/authController");
 const authMiddleware = require("../middleware/authMiddleware");
 const User = require("../model/User");
 
-routes.post("/signup",signup);
-routes.post("/login",login);
-routes.get("/profile",(req,res)=>{
+routes.post("/signup", signUp);
+routes.post("/login", signIn);
+routes.get("/profile",authMiddleware,async (req,res)=>{
     const userId = req.user.id;
-    const userData = User.findById(userId);
+    const userData = await User.findById(userId);
     res.status(200).json({message:`${userData}`, user: req.user });
 });
 
