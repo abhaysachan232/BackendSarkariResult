@@ -1,10 +1,14 @@
 const express = require ('express');
 const connectDataBase = require('./config/db');
 require('dotenv').config();
-
+const PORT = process.env.PORT || 5000;
 const app = express();
 connectDataBase();
 
 app.use(express.json());
-
-app.listen(process.env.PORT,()=>{console.log(`Server is running on port ${process.env.PORT}`)});
+app.get("/", (req, res) => {
+  res.send("API running");
+});
+app.listen(PORT, () => {
+  console.log(`Server is running on port ${PORT}`);
+});
