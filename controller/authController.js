@@ -1,6 +1,7 @@
-const user = require('../model/UserSchema')
-const bcrypt = require('bcrypt');
+const express = require("express");
 const jwt = require('jsonwebtoken');
+const user = require('../models/UserSchema');
+const bcrypt = require('bcrypt');
 
 const signUp = async(req, res)=>{
 const {name, email, password,date, age} = req.body;
