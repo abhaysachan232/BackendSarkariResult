@@ -10,11 +10,11 @@ app.use(express.json());
 
 connectDB();
 
-app.use("/", authRoutes);
-// app.get('/',(req,res)=>{
-//   console.log("Hello World",req);
-//   res.send("Hello World");
-// })
+app.use("/api", authRoutes);
+app.get('/',(req,res)=>{
+  console.log("Hello World",req);
+  res.send("Hello World");
+})
 app.listen(process.env.PORT, () => {
   console.log(`Server is running on http://localhost:${process.env.PORT}`);
 });
