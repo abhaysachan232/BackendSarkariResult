@@ -7,7 +7,7 @@ try{
 const decode = jwt.verify(Token, process.env.JWT_SECRET);
 const userId = decode.id;
 req.user = decode;
-// console.log(User.findById(userId),'data');
+console.log(User.findById(userId),'data');
 next();
 }
 catch(err){
